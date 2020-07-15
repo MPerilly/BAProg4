@@ -11,8 +11,10 @@ int main() {
     cin >> raw_inp;
     vector<string> split_inp = split(raw_inp);
 
-    const size_t num_nodes;
-    const size_t num_edges;
+    const size_t num_nodes = stoul(split_inp[0]);
+    const size_t num_edges = stoul(split_inp[1]);
+
+
 
     return 0;
 }
