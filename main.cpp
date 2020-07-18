@@ -6,7 +6,6 @@ using namespace std;
 
 size_t num_nodes;
 size_t num_edges;
-size_t pre;
 long long beg = -1;
 
 vector<size_t> colors;
