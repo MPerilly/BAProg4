@@ -2,11 +2,12 @@
 #include <vector>
 #include <string>
 #include <utility>
-#include <memory>
 using namespace std;
 
 size_t num_nodes;
 size_t num_edges;
+size_t pre;
+long long beg = -1;
 
 vector<size_t> colors;
 vector<vector<size_t>> adj_list;
@@ -27,9 +28,12 @@ int main() {
     num_nodes = split_inp[0];
     num_edges = split_inp[1];
 
+
     // Initialize adjacency list:
     colors = vector<size_t>(num_nodes, 0);
     adj_list = vector<vector<size_t>>(num_nodes);
+    parents = vector<size_t>(num_nodes);
+
     // Form Adj List from verts:
     for (size_t i = 0; i < num_edges; ++i) {
         getline(cin, raw_inp);
@@ -57,11 +61,14 @@ void color_DFS(const size_t &nodes) {
         // If 'color' is 'white'
         if (colors[i] == 0) {
             do_color_DFS(i);
-            if (!parents.empty()) {
+            if (beg >= 0) {
                 cout << '1' << '\n';
-                for (size_t j = 0; j < parents.size(); ++j) {
-                    cout << parents[j] + 1 << ' ';
+                size_t next = parents[beg];
+                while (next != beg) {
+                    cout << next + 1 << ' ';
+                    next = parents[next];
                 }
+                cout << beg + 1 << ' ';
                 return;
             }
         }
@@ -74,14 +81,13 @@ void do_color_DFS(const size_t &node) {
     colors[node] = 1;
     for (size_t i = 0; i < adj_list[node].size(); ++i){
         if (colors[adj_list[node][i]] == 0) {
-            parents.push_back(node);
-            size_t pre = parents.size();
+            parents[node] = adj_list[node][i];
             do_color_DFS(adj_list[node][i]);
-            if (parents.size() > pre) return;
-            parents.pop_back();
+            if (beg >= 0) return;
         }
         if (colors[adj_list[node][i]] == 1) {
-            parents.push_back(node);
+            parents[node] = adj_list[node][i];
+            beg = node;
             return;
         }
     }
