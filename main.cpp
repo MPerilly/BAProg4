@@ -14,8 +14,8 @@ vector<size_t> parents;
 
 
 vector<size_t> split(const string &str);
-void do_color_DFS(size_t node);
-void color_DFS(size_t nodes);
+void do_color_DFS(const size_t &node);
+void color_DFS(const size_t &nodes);
 
 
 int main() {
@@ -52,13 +52,13 @@ vector<size_t> split(const string &str) {
     return split_ints;
 }
 
-void color_DFS(size_t nodes) {
+void color_DFS(const size_t &nodes) {
     for (size_t i = 0; i < nodes; ++i){
-        vector<size_t> lineage;
         // If 'color' is 'white'
         if (colors[i] == 0) {
             do_color_DFS(i);
             if (!parents.empty()) {
+                cout << '1' << '\n';
                 for (size_t j = 0; j < parents.size(); ++j) {
                     cout << parents[j] + 1 << ' ';
                 }
@@ -69,21 +69,21 @@ void color_DFS(size_t nodes) {
     cout << '0';
 }
 
-void do_color_DFS(size_t node) {
+void do_color_DFS(const size_t &node) {
     // Color node grey:
     colors[node] = 1;
     for (size_t i = 0; i < adj_list[node].size(); ++i){
         if (colors[adj_list[node][i]] == 0) {
             parents.push_back(node);
+            size_t pre = parents.size();
             do_color_DFS(adj_list[node][i]);
-            return;
-            }
+            if (parents.size() > pre) return;
+            parents.pop_back();
+        }
         if (colors[adj_list[node][i]] == 1) {
-            cout << '1' << '\n';
             parents.push_back(node);
             return;
         }
     }
     colors[node] = 2;
-    parents.pop_back();
 }
