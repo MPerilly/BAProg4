@@ -19,7 +19,7 @@ int main() {
     const size_t num_edges = split_inp[1];
     // Initialize verts and adjacency list:
     vector<shared_ptr<pair<size_t, int>>> vertices(num_nodes);
-    vector<vector<shared_ptr<pair<size_t, int>>>> adj_list(num_edges);
+    vector<vector<shared_ptr<pair<size_t, int>>>> adj_list(num_nodes);
     // Shared ptrs for all verts:
     for (size_t i = 1; i < num_nodes + 1; ++i){
         shared_ptr<pair<size_t, int>> insert(new pair<size_t, int>(i, 0));
@@ -56,7 +56,9 @@ int color_DFS(vector<vector<shared_ptr<pair<size_t, int>>>> &adj, vector<shared_
         if ((*i)->second == 0) {
             do_color_DFS(adj, *i, lineage);
             if (!lineage.empty()) {
-                for (size_t j = (lineage.size() - 1); j >= 0; --j) cout << lineage[j] << ' ';
+                for (size_t j = (lineage.size() - 1); j != SIZE_MAX; --j) {
+                    cout << lineage[j] << ' ';
+                }
                 return 1;
             }
         }
